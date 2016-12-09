@@ -9,8 +9,8 @@ class TemplateManager
         }
 
         $replaced = clone($tpl);
-        $replaced->subject = $this->computeText($replaced->subject, $data));
-        $replaced->content = $this->computeText($replaced->content, $data));
+        $replaced->subject = $this->computeText($replaced->subject, $data);
+        $replaced->content = $this->computeText($replaced->content, $data);
 
         return $replaced;
     }
@@ -50,27 +50,6 @@ class TemplateManager
       <a href="{$url}/1" style="color: #fff; text-decoration: none;">
         <div align="center" style="width:40px"><span style="font-size: 2em">1</span></div>
       </a>
-    </td>
-    <td style="background-color:#d4410e">
-      <a href="{$url}/2" style="color: #fff; text-decoration: none;">
-        <div align="center" style="width:40px"><span style="font-size: 2em">1</span></div>
-      </a>
-    </td>
-    <td style="background-color:#d4410e">
-      <a href="{$url}/3" style="color: #fff; text-decoration: none;">
-        <div align="center" style="width:40px"><span style="font-size: 2em">1</span></div>
-      </a>
-    </td>
-    <td style="background-color:#d4410e">
-      <a href="{$url}/4" style="color: #fff; text-decoration: none;">
-        <div align="center" style="width:40px"><span style="font-size: 2em">1</span></div>
-      </a>
-    </td>
-    <td style="background-color:#d4410e">
-      <a href="{$url}/5" style="color: #fff; text-decoration: none;">
-        <div align="center" style="width:40px"><span style="font-size: 2em">1</span></div>
-      </a>
-    </td>
     <td align="left">
         <span><strong>good</strong></span>
     </td>
@@ -111,21 +90,16 @@ STR;
             $dateQuoted = $date->format('m-Y');
 
             (strpos($text, '[quote:date]') !== false)                 and $text = str_replace('[quote:date]'                 ,"".$dateQuoted."",$text);
-            (strpos($text, '[quote:destination_conjunction]') !== false)  and $text = str_replace('[quote:destination_conjunction]'  ,$destinationOfQuote->conjunction,$text);
-            (strpos($text, '[quote:destination_name]') !== false)         and $text = str_replace('[quote:destination_name]'         ,$destinationOfQuote->name,$text);
+            (strpos($text, '[quote:destination_name]') !== false)         and $text = str_replace('[quote:destination_name]'         ,$destinationOfQuote->countryName,$text);
             (strpos($text, '[quote:destination_link]') !== false)         and $text = str_replace('[quote:destination_link]'         , $url, $text);
-            (strpos($text, '[quote:destination_cn]') !== false)           and $text = str_replace('[quote:destination_cn]'           , $destinationOfQuote->computerName, $text);
         }
 
-        /**
-         * DATA
-         * [data:*]
+        /*
+         * SITE
+         * [site:*]
          */
-        foreach($data as $key => &$value) {
-            if(is_int(strpos($text, '[data:' . $key . ']'))) {
-                $text = str_replace('[data:' . $key . ']', $value, $text);
-            }
-        }
+        $text = str_replace('[site:url]', $APPLICATION_CONTEXT->getCurrentSite()->url, $text);
+        $text = str_replace('[site:id]', $APPLICATION_CONTEXT->getCurrentSite()->id, $text);
 
         if ($_quoteFromRepository) {
             $text = str_replace('[quote:id]', $_quoteFromRepository->id, $text);
@@ -136,13 +110,6 @@ STR;
         }
 
         /*
-         * SITE
-         * [site:*]
-         */
-        $text = str_replace('[site:url]', $APPLICATION_CONTEXT->getCurrentSite()->url, $text);
-        $text = str_replace('[site:id]', $APPLICATION_CONTEXT->getCurrentSite()->id, $text);
-
-        /*
          * USER
          * [user:*]
          */
@@ -151,12 +118,10 @@ STR;
             if(isset($_user->firstname)){ $text = str_replace('[Logged:last_name]',ucfirst(mb_strtolower($_user->firstname)),$text);}
             if(isset($_user->lastname)){ $text = str_replace('[Logged:first_name]',ucfirst(mb_strtolower($_user->lastname)),$text);}
             (strpos($text, '[user:first_name]') !== false) and $text = str_replace('[user:first_name]'       , ucfirst(mb_strtolower($_user->firstname)), $text);
-            (strpos($text, '[user:last_name]') !== false) and $text = str_replace('[user:last_name]'        , ucfirst(mb_strtolower($_user->lastname)), $text);
-            (strpos($text, '[user:email]') !== false) and $text = str_replace('[user:email]'            , $_user->email, $text);
+
             $token = base64_encode($_user->id . $_user->email);
             $registerUrl = $APPLICATION_CONTEXT->getCurrentSite()->url . '/club-evaneos/inscription/?cToken=' . $token;
             (strpos($text, '[traveller:quote_url]') !== false) and $text = str_replace('[traveller:quote_url]', '<a href="'.$registerUrl.'">' . $registerUrl . '</a>', $text);
-            (strpos($text, '[traveller:quote_url_only]') !== false) and $text = str_replace('[traveller:quote_url_only]', $registerUrl, $text);
         }
 
         return $text;
