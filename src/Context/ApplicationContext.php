@@ -13,13 +13,14 @@ class ApplicationContext
      */
     private $currentUser;
 
-    public function __construct()
+    protected function __construct()
     {
+        // DO NOT TOUCH THAT
         session_start();
 
         $faker = \Faker\Factory::create();
         $this->currentSite = new Site($faker->randomNumber(), $faker->url);
-        $this->currentUser = new User($faker->randomNumber(), $faker->firstName, $faker->lastName);
+        $this->currentUser = new User($faker->randomNumber(), $faker->firstName, $faker->lastName, $faker->email);
     }
 
     public function getCurrentSite()

@@ -8,11 +8,11 @@ class Destination
     public $name;
     public $computerName;
 
-    public function __construct($id, $countryName, $conjuction, $computerName)
+    public function __construct($id, $countryName, $conjunction, $computerName)
     {
         $this->id = $id;
         $this->countryName = $countryName;
-        $this->conjunction = $conjuction;
+        $this->conjunction = $conjunction;
         $this->computerName = $computerName;
     }
 }

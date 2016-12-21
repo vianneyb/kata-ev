@@ -8,6 +8,6 @@ class UserRepository implements Repository
     {
         // DO NOT MODIFY THIS METHOD
         $faker = Faker\Factory::create();
-        return new User($id, $faker->firstName, $faker->lastName);
+        return new User($id, $faker->firstName, $faker->lastName, $faker->email);
     }
 }
