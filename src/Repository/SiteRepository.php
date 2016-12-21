@@ -6,6 +6,7 @@ class SiteRepository implements Repository
 
     public function getById($id)
     {
+        // DO NOT MODIFY THIS METHOD
         return new Site($id, Faker\Factory::create()->url);
     }
 }

@@ -6,8 +6,8 @@ class UserRepository implements Repository
 
     public function getById($id)
     {
-        $generator = Faker\Factory::create();
-
-        return new User($id, $generator->firstName, $generator->lastName);
+        // DO NOT MODIFY THIS METHOD
+        $faker = Faker\Factory::create();
+        return new User($id, $faker->firstName, $faker->lastName, $faker->email);
     }
 }
