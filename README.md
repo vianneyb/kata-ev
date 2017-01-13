@@ -2,7 +2,7 @@
 
 ## Introduction
 
-In this exercice, you have to improve the implementation of the class TemplateManager, by adding tests and refactoring the code.
+In this exercice, you have to improve the implementation of the class TemplateManager.
 
 Assuming the public method `TemplateManager::getTemplateComputed` is called everywhere, 
 you must not change the signature of this method.
