@@ -115,8 +115,8 @@ STR;
          */
         $_user  = (isset($data['user'])  and ($data['user']  instanceof User))  ? $data['user']  : $APPLICATION_CONTEXT->getCurrentUser();
         if($_user) {
-            if(isset($_user->firstname)){ $text = str_replace('[Logged:last_name]',ucfirst(mb_strtolower($_user->firstname)),$text);}
-            if(isset($_user->lastname)){ $text = str_replace('[Logged:first_name]',ucfirst(mb_strtolower($_user->lastname)),$text);}
+            if(isset($_user->firstname)){ $text = str_replace('[Logged:first_name]',ucfirst(mb_strtolower($_user->firstname)),$text);}
+            if(isset($_user->lastname)){ $text = str_replace('[Logged:last_name]',ucfirst(mb_strtolower($_user->lastname)),$text);}
             (strpos($text, '[user:first_name]') !== false) and $text = str_replace('[user:first_name]'       , ucfirst(mb_strtolower($_user->firstname)), $text);
 
             $token = base64_encode($_user->id . $_user->email);
