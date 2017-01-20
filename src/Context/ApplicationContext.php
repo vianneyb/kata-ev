@@ -15,9 +15,6 @@ class ApplicationContext
 
     protected function __construct()
     {
-        // DO NOT TOUCH THAT
-        session_start();
-
         $faker = \Faker\Factory::create();
         $this->currentSite = new Site($faker->randomNumber(), $faker->url);
         $this->currentUser = new User($faker->randomNumber(), $faker->firstName, $faker->lastName, $faker->email);
