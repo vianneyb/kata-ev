@@ -8,6 +8,9 @@ class DestinationRepository implements Repository
     private $conjunction;
     private $computerName;
 
+    /**
+     * DestinationRepository constructor.
+     */
     public function __construct()
     {
         $this->country = Faker\Factory::create()->country;
@@ -15,6 +18,11 @@ class DestinationRepository implements Repository
         $this->computerName = Faker\Factory::create()->slug();
     }
 
+    /**
+     * @param int $id
+     *
+     * @return Destination
+     */
     public function getById($id)
     {
         // DO NOT MODIFY THIS METHOD
