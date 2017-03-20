@@ -1,24 +1,42 @@
-# test-back-kata-refacto
+# Refactoring Kata Test
 
 ## Introduction
 
-In this exercice, you have to improve the implementation of the class TemplateManager.
+**Evaneos** is present on a lot of countries and we have some message templates we want to send
+in different languages. To do that, we've developed `TemplateManager` whose job is to replace
+placeholders in texts by travel related information.
 
-Assuming the public method `TemplateManager::getTemplateComputed` is called everywhere, 
-you must not change the signature of this method.
+`TemplateManager` is a class that's been around for years and nobody really knows who coded
+it or how it really works. Nonetheless, as the business changes frequently, this class has
+already been modified many times, making it harder to understand at each step.
 
-This exercice should not last longer than 1 hour.
+Today, once again, the PO wants to add some new stuff to it and add the management for a new
+placeholder. But this class is already complex enough and just adding a new behaviour to it
+won't work this time.
+
+Your mission, should you decide to accept it, is to **refactor `TemplateManager` to make it
+understandable by the next developer** and easy to change afterwards. Now is the time for you to
+show your exceptional skills and make this implementation better, extensible, and ready for future
+features.
+
+Sadly for you, the public method `TemplateManager::getTemplateComputed` is called everywhere, 
+and **you can't change its signature**. But that's the only one you can't modify (unless explicitly
+forbidden in a code comment), **every other class is ready for your changes**.
+
+This exercise **should not last longer than 1 hour** (but this can be too short to do it all and
+you might take longer if you want).
 
 You can run the example file to see the method in action.
 
 ## Rules
-Some rules to follow :
+There are some rules to follow:
  - You must commit regularly
- - You must not change code inside Repositories
- - You must not change code where it's written not to do so (see inline code comments)
+ - You must not modify code when comments explicitly forbid it
 
 ## Deliverables
-We expect from you :
- - the link of the git repository 
+What do we expect from you:
+ - the link of the git repository
  - several commits, with an explicit message each time
- - a file/message/email explaining your process and principles you've followed
+ - a file / message / email explaining your process and principles you've followed
+
+**Good luck!**
