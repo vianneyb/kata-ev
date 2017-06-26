@@ -1,5 +1,11 @@
 <?php
 
+namespace kata\Context;
+
+use kata\Entity\Site;
+use kata\Entity\User;
+use kata\Helper\SingletonTrait;
+
 class ApplicationContext
 {
     use SingletonTrait;

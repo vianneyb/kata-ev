@@ -1,5 +1,7 @@
 <?php
 
+namespace kata\Entity;
+
 class Site
 {
     public $id;

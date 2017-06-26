@@ -1,7 +1,33 @@
 <?php
 
+namespace kata;
+
+use kata\Context\ApplicationContext;
+use kata\Entity\Quote;
+use kata\Entity\Template;
+use kata\Repository\DestinationRepository;
+use kata\Repository\QuoteRepository;
+use kata\Repository\SiteRepository;
+
 class TemplateManager
 {
+
+    private $quoteRepository;
+
+    private $siteRepository;
+
+    private $destinationRepository;
+
+    private $appContext;
+
+    public function __construct()
+    {
+        $this->quoteRepository = QuoteRepository::getInstance();
+        $this->siteRepository = SiteRepository::getInstance();
+        $this->destinationRepository = DestinationRepository::getInstance();
+        $this->appContext = ApplicationContext::getInstance();
+    }
+
     public function getTemplateComputed(Template $tpl, array $data)
     {
         if (!$tpl) {
@@ -9,65 +35,31 @@ class TemplateManager
         }
 
         $replaced = clone($tpl);
-        $replaced->subject = $this->computeText($replaced->subject, $data);
-        $replaced->content = $this->computeText($replaced->content, $data);
+
+        $user = (isset($data['user']) and ($data['user'] instanceof User)) ?
+            $data['user'] : $this->appContext->getCurrentUser();
+
+        /** @var  $placeHolderInjectors */
+        $placeHolderInjectors = [];
+        $placeHolderInjectors[] = new \kata\Injectors\User($user);
+
+
+        if (isset($data['quote']) and $data['quote'] instanceof Quote) {
+            $quote = $this->quoteRepository->getById($data['quote']->id);
+            $site = $this->siteRepository->getById($quote->siteId);
+            $destination = $this->destinationRepository->getById($quote->destinationId);
+            $placeHolderInjectors[] = new \kata\Injectors\Quote($quote, $site, $destination);
+
+        }
+
+
+
+        foreach ($placeHolderInjectors as $injector) {
+            $replaced->subject = $injector->inject($replaced->subject);
+            $replaced->content = $injector->inject($replaced->content);
+        }
 
         return $replaced;
     }
 
-    private function computeText($text, array $data)
-    {
-        $APPLICATION_CONTEXT = ApplicationContext::getInstance();
-
-        $quote = (isset($data['quote']) and $data['quote'] instanceof Quote) ? $data['quote'] : null;
-
-        if ($quote)
-        {
-            $_quoteFromRepository = QuoteRepository::getInstance()->getById($quote->id);
-            $usefulObject = SiteRepository::getInstance()->getById($quote->siteId);
-            $destinationOfQuote = DestinationRepository::getInstance()->getById($quote->destinationId);
-
-            if(strpos($text, '[quote:destination_link]') !== false){
-                $destination = DestinationRepository::getInstance()->getById($quote->destinationId);
-            }
-
-            $containsSummaryHtml = strpos($text, '[quote:summary_html]');
-            $containsSummary     = strpos($text, '[quote:summary]');
-
-            if ($containsSummaryHtml !== false || $containsSummary !== false) {
-                if ($containsSummaryHtml !== false) {
-                    $text = str_replace(
-                        '[quote:summary_html]',
-                        Quote::renderHtml($_quoteFromRepository),
-                        $text
-                    );
-                }
-                if ($containsSummary !== false) {
-                    $text = str_replace(
-                        '[quote:summary]',
-                        Quote::renderText($_quoteFromRepository),
-                        $text
-                    );
-                }
-            }
-
-            (strpos($text, '[quote:destination_name]') !== false) and $text = str_replace('[quote:destination_name]',$destinationOfQuote->countryName,$text);
-        }
-
-        if (isset($destination))
-            $text = str_replace('[quote:destination_link]', $usefulObject->url . '/' . $destination->countryName . '/quote/' . $_quoteFromRepository->id, $text);
-        else
-            $text = str_replace('[quote:destination_link]', '', $text);
-
-        /*
-         * USER
-         * [user:*]
-         */
-        $_user  = (isset($data['user'])  and ($data['user']  instanceof User))  ? $data['user']  : $APPLICATION_CONTEXT->getCurrentUser();
-        if($_user) {
-            (strpos($text, '[user:first_name]') !== false) and $text = str_replace('[user:first_name]'       , ucfirst(mb_strtolower($_user->firstname)), $text);
-        }
-
-        return $text;
-    }
 }

@@ -1,5 +1,8 @@
 <?php
 
+
+namespace kata\Entity;
+
 class Destination
 {
     public $id;

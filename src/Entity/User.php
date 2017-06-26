@@ -1,5 +1,7 @@
 <?php
 
+namespace kata\Entity;
+
 class User
 {
     public $id;

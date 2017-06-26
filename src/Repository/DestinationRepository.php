@@ -1,11 +1,18 @@
 <?php
 
+namespace kata\Repository;
+
+use kata\Entity\Destination;
+use kata\Helper\SingletonTrait;
+
 class DestinationRepository implements Repository
 {
     use SingletonTrait;
 
     private $country;
+
     private $conjunction;
+
     private $computerName;
 
     /**
@@ -13,9 +20,9 @@ class DestinationRepository implements Repository
      */
     public function __construct()
     {
-        $this->country = Faker\Factory::create()->country;
+        $this->country = \Faker\Factory::create()->country;
         $this->conjunction = 'en';
-        $this->computerName = Faker\Factory::create()->slug();
+        $this->computerName = \Faker\Factory::create()->slug();
     }
 
     /**

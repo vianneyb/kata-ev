@@ -1,5 +1,7 @@
 <?php
 
+namespace kata\Entity;
+
 class Quote
 {
     public $id;

@@ -1,5 +1,7 @@
 <?php
 
+namespace kata\Helper;
+
 trait SingletonTrait
 {
     /**

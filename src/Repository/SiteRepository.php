@@ -1,5 +1,10 @@
 <?php
 
+namespace kata\Repository;
+
+use kata\Entity\Site;
+use kata\Helper\SingletonTrait;
+
 class SiteRepository implements Repository
 {
     use SingletonTrait;
@@ -13,7 +18,7 @@ class SiteRepository implements Repository
     public function __construct()
     {
         // DO NOT MODIFY THIS METHOD
-        $this->url = Faker\Factory::create()->url;
+        $this->url = \Faker\Factory::create()->url;
     }
 
     /**
